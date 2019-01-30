@@ -1,4 +1,4 @@
-var gifs = ["The Office", "Funny Cat", "Funny Dog", "Fail"];
+var topics = ["The Office", "Funny Cat", "Funny Dog", "Fail"];
 
       // displayGifInfo function re-renders the HTML to display the appropriate content
       function displayGifInfo() {
@@ -20,21 +20,17 @@ var gifs = ["The Office", "Funny Cat", "Funny Dog", "Fail"];
           // Looping over every result item
           for (var i = 0; i < results.length; i++) {
           // Creates a img to hold the gif
-            var gifDiv = $("<img>").addClass("gifSection").prependTo("#gif-view");
+            var gifDiv = $("<div>").addClass("gifSection").prependTo("#gif-view");
 
             var gif = results[i].images.fixed_height.url;
+            var gifStill = results[i].images.fixed_height_still.url;
 
-                gifDiv.attr({
-                    "src": gif,
+                $("<img>").attr({
+                    "src": gifStill,
                     "data-animate": gif,
-                    "data-still": results[i].images.fixed_height_still.url,
-                    "data-state": "animate",
-                }).addClass("gif");
-
-            // Retrieves the Rating Data
-        
-            // Creates an element to have the gif displayed
-            $("<h3>").html("<img src='" + gif+ "'></img>").prependTo(gifDiv);
+                    "data-still": gifStill,
+                    "data-state": "still",
+                }).addClass("gif").prependTo(gifDiv);
             };
         });
 
@@ -47,7 +43,7 @@ var gifs = ["The Office", "Funny Cat", "Funny Dog", "Fail"];
         // (this is necessary otherwise you will have repeat buttons)
         $("#buttons-view").empty();
         // Loops through the array of gifs
-        for (var i = 0; i < gifs.length; i++) {
+        for (var i = 0; i < topics.length; i++) {
 
           // Then dynamicaly generates buttons for each gif in the array
           // This code $("<button>") is all jQuery needs to create the beginning and end tag. (<button></button>)
@@ -55,9 +51,9 @@ var gifs = ["The Office", "Funny Cat", "Funny Dog", "Fail"];
           // Adds a class of gif to our button
           a.addClass("gifButton");
           // Added a data-attribute
-          a.attr("data-name", gifs[i]);
+          a.attr("data-name", topics[i]);
           // Provided the initial button text
-          a.text(gifs[i]);
+          a.text(topics[i]);
           // Added the button to the buttons-view div
           $("#buttons-view").append(a);
         }
@@ -95,7 +91,7 @@ var gifs = ["The Office", "Funny Cat", "Funny Dog", "Fail"];
                 "src": $(target).attr("data-still"),
                 "data-state": "still",
             });
-        } else if (state === "still") {
+        } else {
             $(target).attr({
                 "src": $(target).attr("data-animate"),
                 "data-state": "animate",
