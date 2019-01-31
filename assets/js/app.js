@@ -1,4 +1,4 @@
-var topics = ["The Office", "Funny Cat", "Funny Dog", "Fail"];
+var topics = ["Schitt's Creek", "Outlander", "Stranger Things", "New Girl"];
 
       // displayGifInfo function re-renders the HTML to display the appropriate content
       function displayGifInfo() {
@@ -24,17 +24,24 @@ var topics = ["The Office", "Funny Cat", "Funny Dog", "Fail"];
 
             var gif = results[i].images.fixed_height.url;
             var gifStill = results[i].images.fixed_height_still.url;
-
-                $("<img>").attr({
-                    "src": gifStill,
-                    "data-animate": gif,
-                    "data-still": gifStill,
-                    "data-state": "still",
-                }).addClass("gif").prependTo(gifDiv);
-            };
+            
+            // $(gifDiv).html("<br></br>");
+            $("<img>").attr({
+              "src": gifStill,
+              "data-animate": gif,
+              "data-still": gifStill,
+              "data-state": "still",
+            }).addClass("gif").prependTo(gifDiv);
+            // var showTitle = $('<h6>').text(results[i].title);
+            var showRating = $('<p>').text(results[i].rating)
+                .addClass("font-weight-bold text-uppercase");
+            $(gifDiv).append(showRating);
+          };
+          
         });
 
       }
+
 
       // Function for displaying gif data
       function renderButtons() {
@@ -46,12 +53,13 @@ var topics = ["The Office", "Funny Cat", "Funny Dog", "Fail"];
         for (var i = 0; i < topics.length; i++) {
 
           // Then dynamicaly generates buttons for each gif in the array
-          // This code $("<button>") is all jQuery needs to create the beginning and end tag. (<button></button>)
           var a = $("<button>");
-          // Adds a class of gif to our button
-          a.addClass("gifButton");
+          
+          a.addClass("gifButton btn btn-warning btn-sm");
           // Added a data-attribute
-          a.attr("data-name", topics[i]);
+          a.attr({
+            "data-name": topics[i],
+          });
           // Provided the initial button text
           a.text(topics[i]);
           // Added the button to the buttons-view div
@@ -62,12 +70,13 @@ var topics = ["The Office", "Funny Cat", "Funny Dog", "Fail"];
       // This function handles events where the add gif button is clicked
       $("#add-gif").on("click", function(event) {
         event.preventDefault();
+        console.log("add gif clicked");
         // This line of code will grab the input from the textbox
         var gif = $("#gif-input").val().trim();
-        $("#gif-input").val("");
         // The gif from the textbox is then added to our array
-        if (gifs.indexOf(gif) === -1 && gif!="") {
-        gifs.push(gif);
+        if (topics.indexOf(gif) === -1 && gif!="") {
+          $("#gif-input").val("");
+          topics.push(gif);
         }
 
         // Calling renderButtons which handles the processing of our gif array
@@ -76,6 +85,7 @@ var topics = ["The Office", "Funny Cat", "Funny Dog", "Fail"];
 
       // Adding click event listeners to all elements with a class of "gif"
       $(document).on("click", ".gifButton", displayGifInfo);
+      // $('#search-now').on("click", searchNow);
       $(document).on("click", ".gif", pauseGif);
 
       // Calling the renderButtons function to display the intial buttons
